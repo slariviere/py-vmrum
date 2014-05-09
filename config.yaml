@@ -1,0 +1,8 @@
+vms: 
+    path_dir: /Users/slariviere/Documents/Virtual Machines.localized
+vm:
+    source:
+        name: Centos 6.5
+        path_dir: /Users/slariviere/Documents/Virtual Machines.localized/base-centos-64.vmwarevm
+        vmx_path: /Users/slariviere/Documents/Virtual Machines.localized/base-centos-64.vmwarevm/base-centos-64.vmx
+        vmx_file: base-centos-64.vmx
