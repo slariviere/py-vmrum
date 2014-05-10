@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import os, sys, yaml
 
+debug_mode = False
+
 # Set the help menu
 def getSyntax():
     return "Usage: clone-vm.py [options...] <vm_name>"
@@ -10,7 +12,7 @@ def setArguments(argv):
     opts = {}
     # Set available arguments
     valued_args = { '--username': 'username', '-u': 'username', '--password': 'password', '-p': 'password' }
-    non_valued_args = { '--linked': 'linked', '-l': 'linked', '--full': 'full', '-f': 'full' }
+    non_valued_args = { '--debug': 'debug', '--linked': 'linked', '-l': 'linked', '--full': 'full', '-f': 'full' }
     while argv:
         # If it's an option
         if argv[0][0] == '-':
@@ -46,11 +48,20 @@ if len(sys.argv) == 1:
    exit(1)
 else:
    args = setArguments(sys.argv)
+   try:
+       debug_mode = args['debug']
+       print "[-] Args: "
+       print args
+   except KeyError:
+       debug_mode = False
 
 # Load yaml file configuration
 if os.path.isfile('config.yaml'):
     f = open('config.yaml')
     configMap = yaml.safe_load(f)
+    if debug_mode:
+        print "[-] Config map: "
+        print configMap
     f.close()
 else:
     print "Config file 'config.yaml' not found"
@@ -64,5 +75,8 @@ if not os.path.exists(vm_dest_dir):
 
 cmd = "vmrun clone '" + configMap['vm']['source']['vmx_path'] + "' '" + vm_dest_vmx + "' linked -cloneName=" + args['name']  
 
-print "[+] Creating new linked vm: " + args['name']
-os.system(cmd)
+if debug_mode:
+    print "[-] vmrun command:" + cmd
+else:
+    print "[+] Creating new linked vm: " + args['name']
+    os.system(cmd)
