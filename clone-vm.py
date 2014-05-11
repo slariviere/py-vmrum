@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 import os, sys, yaml
 
-debug_mode = False
-
 # Set the help menu
 def getSyntax():
     return "Usage: clone-vm.py [options...] <vm_name>"
@@ -41,6 +39,12 @@ def setArguments(argv):
         # This is the script name, we don't store it
         elif argv[0] == sys.argv[0]:
             argv = argv[1:]
+    try:
+        name = opts['name']
+    except KeyError:
+        print 'VM name is missing.'
+        print getSyntax()
+        exit(1)
     return opts
 
 if len(sys.argv) == 1:
@@ -73,7 +77,18 @@ vm_dest_vmx = vm_dest_dir + '/' + args['name'] + '.vmx'
 if not os.path.exists(vm_dest_dir):
   os.makedirs(vm_dest_dir)
 
-cmd = "vmrun clone '" + configMap['vm']['source']['vmx_path'] + "' '" + vm_dest_vmx + "' linked -cloneName=" + args['name']  
+# Set the type of copy
+# If the vm type is not set we use linked as default
+if 'linked' in args and args['linked']: 
+    vm_type = 'linked' 
+elif 'full' in args and args['full']:
+    vm_type = 'full'
+else:
+    print "[+] Setting the vm type as linked"
+    vm_type = 'linked'
+
+# Set the final command to be sent
+cmd = "vmrun clone '" + configMap['vm']['source']['vmx_path'] + "' '" + vm_dest_vmx + "' " + vm_type  + " -cloneName=" + args['name']  
 
 if debug_mode:
     print "[-] vmrun command:" + cmd
