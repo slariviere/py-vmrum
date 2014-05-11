@@ -10,7 +10,7 @@ def setArguments(argv):
     opts = {}
     # Set available arguments
     valued_args = { '--username': 'username', '-u': 'username', '--password': 'password', '-p': 'password' }
-    non_valued_args = { '--debug': 'debug', '--linked': 'linked', '-l': 'linked', '--full': 'full', '-f': 'full' }
+    non_valued_args = { '--debug': 'debug', '--linked': 'linked', '-l': 'linked', '--full': 'full', '-f': 'full', '-s': 'start', '--start': 'start' }
     while argv:
         # If it's an option
         if argv[0][0] == '-':
@@ -94,4 +94,10 @@ if debug_mode:
     print "[-] vmrun command:" + cmd
 else:
     print "[+] Creating new linked vm: " + args['name']
+    os.system(cmd)
+
+# Check if we need to start the VM
+if 'start' in args and args['start']:
+    print "[+] Starting the VM"
+    cmd = "vmrun start '" + vm_dest_vmx + "' gui"
     os.system(cmd)
