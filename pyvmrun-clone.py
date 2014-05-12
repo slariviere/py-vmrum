@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import os, sys, yaml
+import os, sys, config
 
 # Set the help menu
 def getSyntax():
@@ -47,6 +47,7 @@ def setArguments(argv):
         exit(1)
     return opts
 
+# Parsing arguments
 if len(sys.argv) == 1:
    print getSyntax() 
    exit(1)
@@ -59,19 +60,10 @@ else:
    except KeyError:
        debug_mode = False
 
-# Load yaml file configuration
-if os.path.isfile( os.path.dirname(os.path.realpath(__file__)) + '/config.yaml'):
-    f = open(os.path.dirname(os.path.realpath(__file__)) + '/config.yaml')
-    configMap = yaml.safe_load(f)
-    if debug_mode:
-        print "[-] Config map: "
-        print configMap
-    f.close()
-else:
-    print "Config file 'config.yaml' not found"
-    exit(2)
+# Get config from the config.yaml file
+conf = config.Config(args['debug'])
 
-vm_dest_dir = configMap['vms']['path_dir'] + "/" + args['name'] + ".vmwarevm"
+vm_dest_dir = conf.getVmsPathDir() +  "/" + args['name'] + ".vmwarevm"
 vm_dest_vmx = vm_dest_dir + '/' + args['name'] + '.vmx'
 
 if not os.path.exists(vm_dest_dir):
@@ -88,7 +80,7 @@ else:
     vm_type = 'linked'
 
 # Set the final command to be sent
-cmd = "vmrun clone '" + configMap['vm']['source']['vmx_path'] + "' '" + vm_dest_vmx + "' " + vm_type  + " -cloneName=" + args['name']  
+cmd = "vmrun clone '" + conf.getVmSourceVMXPath() + "' '" + vm_dest_vmx + "' " + vm_type  + " -cloneName=" + args['name']  
 
 if debug_mode:
     print "[-] vmrun command:" + cmd
