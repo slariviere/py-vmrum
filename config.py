@@ -3,7 +3,7 @@
 import os, yaml
 
 class Config(object):
-    def __init__(self, debug_mode):
+    def __init__(self, debug_mode = False):
         # Load yaml file configuration
         if os.path.isfile( os.path.dirname(os.path.realpath(__file__)) + '/config.yaml'):
             f = open(os.path.dirname(os.path.realpath(__file__)) + '/config.yaml')
