@@ -10,5 +10,5 @@ Python wrapper of the VMware vmrum utility
 You can clone the repository wherever you want. The bootstrapper script will symlink all the scipt files in your home bin folder.
 
 ```bash
-git clone https://github.com/slariviere/py-vmrum.git && cd py-vmrum && source bootstrap.sh
+pip -r requirement.txt && git clone https://github.com/slariviere/py-vmrum.git && cd py-vmrum && source bootstrap.sh
 ```
