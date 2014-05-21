@@ -61,7 +61,7 @@ else:
        debug_mode = False
 
 # Get config from the config.yaml file
-conf = config.Config(args['debug'])
+conf = config.Config(debug_mode)
 
 vm_dest_dir = conf.getVmsPathDir() +  "/" + args['name'] + ".vmwarevm"
 vm_dest_vmx = vm_dest_dir + '/' + args['name'] + '.vmx'
