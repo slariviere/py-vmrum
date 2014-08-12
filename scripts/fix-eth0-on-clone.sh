@@ -20,4 +20,6 @@ if [ $(grep -c $mac /etc/sysconfig/network-scripts/ifcfg-eth0) -eq 0 ]; then
     sed 's/HWADDR.*/HWADDR='"$mac"'/' /etc/sysconfig/network-scripts/ifcfg-eth0 > /tmp/ifcfg$$
 
     mv /tmp/ifcfg$$  /etc/sysconfig/network-scripts/ifcfg-eth0 
+
+    shutdown -r now
 fi
